@@ -1,9 +1,10 @@
+import Intro from "@/components/home/intro";
 import { View, Text } from "react-native";
 
 export default function HomeScreen() {
   return (
-    <View className="flex-1 items-center justify-center bg-zinc-100">
-      <Text>Home page</Text>
+    <View className="flex-col bg-inherit mx-3 top-10">
+      <Intro />
     </View>
   );
 }
