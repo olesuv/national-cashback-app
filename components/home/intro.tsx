@@ -7,7 +7,7 @@ export default function Intro() {
       <Slogan />
 
       <View
-        style={tw`items-left rounded-md border-2 p-2 bg-inherit border-zinc-200`}
+        style={tw`items-start rounded-md border-2 border-zinc-200 bg-inherit p-2`}
       >
         <Text style={tw`text-xl font-bold`}>that's kinda asss</Text>
       </View>

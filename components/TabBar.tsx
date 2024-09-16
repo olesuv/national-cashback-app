@@ -1,15 +1,18 @@
 import { View, TouchableOpacity } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { TabBarIcons } from "@/constants/icons";
+import { useColorScheme } from "react-native";
 
 export default function TabBar({
   state,
   descriptors,
   navigation,
 }: BottomTabBarProps) {
+  const colorScheme = useColorScheme();
+
   return (
     <View
-      style={tw`absolute flex-row justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-800 bottom-0 rounded-t-3xl shadow-lg`}
+      style={tw`absolute bottom-0 flex-row items-center justify-between rounded-t-3xl bg-zinc-50 p-4 shadow-lg`}
     >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
@@ -48,13 +51,18 @@ export default function TabBar({
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={tw`flex-1 items-center justify-center p-4 ${
-              isFocused ? "bg-focused" : "bg-unfocused"
-            }`}
+            style={tw`flex-1 items-center justify-center p-4`}
           >
             {
               // @ts-ignore
-              TabBarIcons[route.name]({ isFocused })
+              TabBarIcons[route.name]({
+                isFocused,
+                color: isFocused
+                  ? colorScheme === "light"
+                    ? tw.color("zinc-900")
+                    : tw.color("zinc-50")
+                  : tw.color("zinc-400"),
+              })
             }
           </TouchableOpacity>
         );
