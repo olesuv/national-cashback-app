@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { Text, View, ActivityIndicator, Alert } from "react-native";
 import { Camera, CameraView, ScanningResult } from "expo-camera";
 
 export default function ScannerScreen() {
@@ -79,17 +73,6 @@ export default function ScannerScreen() {
           />
         </View>
       </View>
-
-      {scanned && (
-        <View style={tw`absolute bottom-8 left-0 right-0 items-center`}>
-          <TouchableOpacity
-            style={tw`rounded-full bg-blue-500 px-4 py-2`}
-            onPress={() => setScanned(false)}
-          >
-            <Text style={tw`font-bold text-white`}>Tap to Scan Again</Text>
-          </TouchableOpacity>
-        </View>
-      )}
     </View>
   );
 }
