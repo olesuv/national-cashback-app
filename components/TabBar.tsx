@@ -8,7 +8,9 @@ export default function TabBar({
   navigation,
 }: BottomTabBarProps) {
   return (
-    <View className="absolute flex-row justify-between items-center p-4 bg-zinc-50 bottom-0 rounded-t-3xl shadow-lg">
+    <View
+      style={tw`absolute flex-row justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-800 bottom-0 rounded-t-3xl shadow-lg`}
+    >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
 
@@ -46,15 +48,13 @@ export default function TabBar({
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            className={`flex-1 items-center justify-center p-4 ${
+            style={tw`flex-1 items-center justify-center p-4 ${
               isFocused ? "bg-focused" : "bg-unfocused"
             }`}
           >
             {
               // @ts-ignore
-              TabBarIcons[route.name]({
-                color: isFocused ? "black" : "#93a1a1",
-              })
+              TabBarIcons[route.name]({ isFocused })
             }
           </TouchableOpacity>
         );
