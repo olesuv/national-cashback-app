@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, ActivityIndicator, Alert } from "react-native";
 import { Camera, CameraView, ScanningResult } from "expo-camera";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function ScannerScreen() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
+  const tabIsFocused = useIsFocused();
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -57,14 +59,16 @@ export default function ScannerScreen() {
               </Text>
             </View>
           )}
-          <CameraView
-            style={tw`flex-1 ${isCameraReady ? "" : "hidden"}`}
-            onCameraReady={handleCameraReady}
-            onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-            barcodeScannerSettings={{
-              barcodeTypes: ["ean13", "ean8", "code128", "itf14"],
-            }}
-          />
+          {tabIsFocused && (
+            <CameraView
+              style={tw`flex-1 ${isCameraReady ? "" : "hidden"}`}
+              onCameraReady={handleCameraReady}
+              onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+              barcodeScannerSettings={{
+                barcodeTypes: ["ean13", "ean8", "code128", "itf14"],
+              }}
+            />
+          )}
         </View>
 
         <View style={tw`absolute inset-0 flex items-center justify-center`}>
