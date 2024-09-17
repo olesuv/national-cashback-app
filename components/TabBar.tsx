@@ -12,7 +12,7 @@ export default function TabBar({
 
   return (
     <View
-      style={tw`absolute bottom-0 flex-row items-center justify-between rounded-t-3xl bg-zinc-50 p-4 shadow-lg`}
+      style={tw`absolute bottom-0 flex-row items-center justify-between rounded-t-3xl bg-zinc-50 p-4 shadow-md`}
     >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
