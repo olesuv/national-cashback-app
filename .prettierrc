@@ -2,5 +2,6 @@
   "plugins": ["prettier-plugin-tailwindcss"],
   "tailwindFunctions": ["tw"],
   "tailwindConfig": "./tailwind.config.js",
-  "tailwindPreserveWhitespace": true
+  "tailwindPreserveWhitespace": true,
+  "printWidth": 120
 }
