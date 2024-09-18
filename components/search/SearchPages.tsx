@@ -16,7 +16,7 @@ export default function SearchPages({
   handleNextPage,
 }: SearchPagesProps) {
   return (
-    <View style={tw`mb-20 flex-row items-center justify-between border-zinc-200 bg-transparent p-4`}>
+    <View style={tw`flex-row items-center justify-between border-zinc-200 bg-transparent p-4`}>
       <TouchableOpacity
         onPress={handlePrevPage}
         disabled={offset === 0}
