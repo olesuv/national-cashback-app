@@ -1,6 +1,7 @@
 import { ProductDTO } from "@/app/(tabs)/search";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import SearchPages from "./SearchPages";
+import SearchResultsMapping from "./SearchResultsMapping";
 
 interface SearchResultsProps {
   searchResults: ProductDTO[];
@@ -34,11 +35,7 @@ export default function SearchResults({
         onScrollBeginDrag={handleScroll}
       >
         {searchResults.map((product, index) => (
-          <View key={index} style={tw`mb-2 rounded-lg border border-zinc-300 bg-white p-4`}>
-            <Text style={tw`text-base font-semibold text-black`}>{product.product_name}</Text>
-            <Text style={tw`text-sm text-zinc-500`}>({product.barcode})</Text>
-            <Text style={tw`text-sm text-zinc-500`}>{product.brand}</Text>
-          </View>
+          <SearchResultsMapping key={index} product={product} index={index} />
         ))}
 
         {searchResults.length > 0 && (
