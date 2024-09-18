@@ -13,7 +13,6 @@ export default function SearchRules() {
             {"."}
           </Text>
         </View>
-
         <View style={tw`flex-col items-start rounded-xl border border-white bg-zinc-100 p-2`}>
           <Text style={tw`pb-2 text-black`}>
             - Не забувай, що не всі товари підпадають під програму "Національний Кешбек"

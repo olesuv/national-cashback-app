@@ -49,20 +49,20 @@ export default function SearchScreen() {
 
   return (
     <View style={tw`flex-1`}>
-      <View style={tw`flex-1`}>
-        <SearchBar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          setSearchError={setSearchError}
-          setSearchResults={setSearchResults}
-          setOffset={setOffset}
-          fetchResults={fetchResults}
-        />
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setSearchError={setSearchError}
+        setSearchResults={setSearchResults}
+        setOffset={setOffset}
+        fetchResults={fetchResults}
+      />
 
-        {searchError === "" && searchResults.length === 0 && <SearchRules />}
-
+      <View style={tw`mb-20 flex-1`}>
         {searchError !== "" ? (
           <SearchError searchError={searchError} />
+        ) : searchResults.length === 0 ? (
+          <SearchRules />
         ) : (
           <SearchResults
             searchResults={searchResults}

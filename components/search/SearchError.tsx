@@ -4,7 +4,8 @@ export default function SearchError({ searchError }: { searchError: string }) {
   return (
     <View style={tw`flex-1 items-center justify-center bg-transparent px-4`}>
       <View style={tw`rounded-xl bg-rose-500 p-4`}>
-        <Text style={tw`mb-3 inline-block text-center text-2xl font-semibold text-white`}>{searchError}</Text>
+        <Text style={tw`mb-3 text-center text-2xl font-semibold text-white`}>{searchError}</Text>
+
         <View style={tw`flex-col items-start rounded-xl border border-rose-300 bg-rose-400 p-2`}>
           <Text style={tw`pb-2 text-white`}>
             - Не забувай, що не всі товари підпадають під програму "Національний Кешбек"
