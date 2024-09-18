@@ -1,7 +1,9 @@
-import { ProductDTO } from "@/app/(tabs)/search";
-import { Text, Button, View } from "react-native";
+import { ProductDTO, ProductErrorDTO } from "@/app/(tabs)/search";
+import { Text, View, Pressable } from "react-native";
 
 import BottomHalf from "react-native-modal";
+import axios from "axios";
+import { useState } from "react";
 
 interface FullInfoProps {
   infoData: ProductDTO;
@@ -9,26 +11,73 @@ interface FullInfoProps {
   toggleModal: () => void;
 }
 
+interface ProductEctInfoDTO {
+  edrpou: string;
+  rnokpp: string;
+}
+
 export default function FullInfoPopUp({ infoData, isModalVisible, toggleModal }: FullInfoProps) {
+  const [ectInfo, setEctInfo] = useState<ProductEctInfoDTO>({ edrpou: "", rnokpp: "" });
+
+  try {
+    fetchEctInfo(infoData.barcode).then((data) => {
+      setEctInfo(data);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
   return (
     <View style={tw`flex-1 bg-white`}>
       <BottomHalf isVisible={isModalVisible}>
-        <View style={tw`absolute inset-x-0 bottom-0 rounded-t-lg bg-white p-4`}>
-          <Text style={tw`mb-4 text-2xl font-bold text-black`}>{infoData.product_name}</Text>
-          <Text style={tw`text-lg`}>
-            <Text style={tw`font-semibold`}>Код товару: </Text>
-            {infoData.barcode}
-          </Text>
-          <Text style={tw`text-lg`}>
-            <Text style={tw`font-semibold`}>Компанія: </Text>
-            {infoData.brand}
-          </Text>
+        <View style={tw`absolute inset-x-0 bottom-0 rounded-t-xl bg-white p-4`}>
+          <View style={tw`mb-4`}>
+            <Text style={tw`text-2xl font-bold text-black`}>{infoData.product_name}</Text>
+            <Text style={tw`text-lg`}>
+              <Text style={tw`font-semibold`}>Код товару: </Text>
+              {infoData.barcode}
+            </Text>
+            <Text style={tw`text-lg`}>
+              <Text style={tw`font-semibold`}>Компанія: </Text>
+              {infoData.brand}
+            </Text>
+          </View>
 
-          <Button title="Hide modal" onPress={toggleModal} />
+          <View style={tw`mb-4`}>
+            <Text style={tw`text-xl font-bold`}>Інформація про виробника:</Text>
+            {ectInfo.edrpou === "" && ectInfo.rnokpp === "" ? (
+              <Text style={tw`text-lg`}>Інформація виробника відсутня</Text>
+            ) : null}
+            {ectInfo.edrpou === "" && ectInfo.rnokpp !== "" ? (
+              <Text style={tw`text-lg`}>
+                <Text style={tw`font-semibold`}>РНОКПП: </Text>
+                {ectInfo.rnokpp}
+              </Text>
+            ) : null}
+            {ectInfo.edrpou !== "" && ectInfo.rnokpp === "" ? (
+              <Text style={tw`text-lg`}>
+                <Text style={tw`font-semibold`}>ЄДРПОУ: </Text>
+                {ectInfo.edrpou}
+              </Text>
+            ) : null}
+          </View>
+
+          <Pressable onPress={toggleModal} style={tw`flex-1 items-center rounded-full border p-4`}>
+            <Text style={tw`text-lg font-bold`}>Зрозуміло</Text>
+          </Pressable>
         </View>
       </BottomHalf>
     </View>
   );
 }
 
-// TODO fetch
+async function fetchEctInfo(barcode: string): Promise<ProductEctInfoDTO> {
+  return await axios
+    .get(`${process.env.EXPO_PUBLIC_API}/products/search-ect-info`, { params: { barcode } })
+    .then((response) => {
+      return response.data as ProductEctInfoDTO;
+    })
+    .catch((error) => {
+      throw error.response.data as ProductErrorDTO;
+    });
+}
