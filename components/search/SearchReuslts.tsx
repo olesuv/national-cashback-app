@@ -1,5 +1,5 @@
 import { ProductDTO } from "@/app/(tabs)/search";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import SearchPages from "./SearchPages";
 import SearchResultsMapping from "./SearchResultsMapping";
 
