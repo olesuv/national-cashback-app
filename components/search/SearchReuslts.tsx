@@ -1,4 +1,4 @@
-import { ProductDTO } from "@/app/(tabs)/search";
+import { ProductDTO } from "@/types/productDTOs";
 import { ScrollView, View } from "react-native";
 import SearchPages from "./SearchPages";
 import SearchResultsMapping from "./SearchResultsMapping";

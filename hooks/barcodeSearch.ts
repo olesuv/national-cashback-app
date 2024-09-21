@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import axios, { AxiosError } from "axios";
-import { ProductDTO } from "@/app/(tabs)/search";
+import { ProductDTO } from "@/types/productDTOs";
 import { API_ENDPOINT } from "@/constants/configs";
 
 export const useProductSearch = () => {

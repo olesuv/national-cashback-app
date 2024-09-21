@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 
-import { ProductDTO } from "@/app/(tabs)/search";
+import { ProductDTO } from "@/types/productDTOs";
 import FullInfoPopUp from "./details/FullInfoPopUp";
 
 interface ProductMappingProps {

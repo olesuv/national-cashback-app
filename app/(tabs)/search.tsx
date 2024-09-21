@@ -6,21 +6,7 @@ import SearchRules from "@/components/search/SearchRules";
 import SearchError from "@/components/search/SearchError";
 import SearchResults from "@/components/search/SearchReuslts";
 import SearchBar from "@/components/search/SearchBar";
-
-export interface ProductDTO {
-  barcode: string;
-  brand: string;
-  product_name: string;
-  legal_name: string;
-  edrpou: string | null;
-  rnokpp: string | null;
-}
-
-export interface ProductErrorDTO {
-  message: string;
-  error: string;
-  statusCode: number;
-}
+import { ProductDTO, ProductErrorDTO } from "@/types/productDTOs";
 
 export default function SearchScreen() {
   const [searchQuery, setSearchQuery] = React.useState("");

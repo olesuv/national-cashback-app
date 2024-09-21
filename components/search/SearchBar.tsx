@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React from "react";
 
-import { ProductDTO } from "@/app/(tabs)/search";
+import { ProductDTO } from "@/types/productDTOs";
 
 import { Octicons } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";

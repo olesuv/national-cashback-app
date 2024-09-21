@@ -1,4 +1,4 @@
-import { ProductDTO, ProductErrorDTO } from "@/app/(tabs)/search";
+import { ProductDTO, ProductErrorDTO } from "@/types/productDTOs";
 import { Text, View, Pressable } from "react-native";
 
 import BottomHalf from "react-native-modal";
