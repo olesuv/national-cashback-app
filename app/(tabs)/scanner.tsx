@@ -53,13 +53,10 @@ export default function ScannerScreen() {
   const handleBarCodeScanned = useCallback(
     async (scanningRes: ScanningResult) => {
       setScanned(true);
-      try {
-        const data = await searchProduct(scanningRes.data);
-        setProduct(data);
-        setModalVisible(true);
-      } catch (err) {
-        // Error handling is done in the useProductSearch hook
-      }
+
+      const data = await searchProduct(scanningRes.data);
+      setProduct(data);
+      setModalVisible(true);
     },
     [searchProduct],
   );
