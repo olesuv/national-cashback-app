@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, ActivityIndicator } from "react-native";
-import { Camera, CameraView, ScanningResult } from "expo-camera";
+import { Text, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
-import { ProductDTO, ProductErrorDTO } from "./search";
+import { Camera, CameraView, ScanningResult } from "expo-camera";
 import axios, { AxiosError } from "axios";
+
+import { ProductDTO, ProductErrorDTO } from "./search";
 
 import FullInfoPopUp from "@/components/search/details/FullInfoPopUp";
 import ProductErrorAlert from "@/components/scanner/ScanProductError";
+import InitCamera from "@/components/scanner/InitCamera";
+import ScannerLoading from "@/components/scanner/ScannerLoading";
 
 export default function ScannerScreen() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -73,12 +76,7 @@ export default function ScannerScreen() {
     <View style={tw`flex-1 bg-gray-100`}>
       <View style={tw`flex-1 items-center justify-center`}>
         <View style={tw`h-1/4 w-4/5 overflow-hidden rounded-lg bg-gray-200`}>
-          {!isCameraReady && (
-            <View style={tw`flex-1 items-center justify-center`}>
-              <ActivityIndicator size="large" color="#4B5563" />
-              <Text style={tw`mt-2 text-gray-600`}>Камера налаштовується...</Text>
-            </View>
-          )}
+          {!isCameraReady && <InitCamera />}
           {tabIsFocused && (
             <CameraView
               style={tw`flex-1 ${isCameraReady ? "" : "hidden"}`}
@@ -90,17 +88,7 @@ export default function ScannerScreen() {
             />
           )}
         </View>
-
-        <View style={tw`absolute inset-0 flex items-center justify-center`}>
-          <View style={tw`h-1/4 w-4/5 rounded-lg border-2 border-white opacity-50`} />
-        </View>
-
-        {isLoading && (
-          <View style={tw`absolute inset-0 flex items-center justify-center bg-black bg-opacity-50`}>
-            <ActivityIndicator size="large" color="#FFFFFF" />
-            <Text style={tw`mt-2 text-white`}>Завантаження...</Text>
-          </View>
-        )}
+        {isLoading && <ScannerLoading />}
 
         <FullInfoPopUp infoData={product} isModalVisible={isModalVisible} toggleModal={toggleModal} />
       </View>
@@ -111,7 +99,7 @@ export default function ScannerScreen() {
 async function handleSearchByBarcode(barcode: string): Promise<ProductDTO> {
   try {
     const response = await axios.get(`${process.env.EXPO_PUBLIC_API}/products/search-barcode`, {
-      params: { barcode: barcode },
+      params: barcode,
       timeout: 5000,
     });
     return response.data as ProductDTO;
