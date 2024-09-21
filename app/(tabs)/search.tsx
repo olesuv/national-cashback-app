@@ -12,6 +12,8 @@ export interface ProductDTO {
   brand: string;
   product_name: string;
   legal_name: string;
+  edrpou: string | null;
+  rnokpp: string | null;
 }
 
 export interface ProductErrorDTO {

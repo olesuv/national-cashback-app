@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Text, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { Camera, CameraView, ScanningResult } from "expo-camera";
@@ -19,13 +19,13 @@ export default function ScannerScreen() {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [product, setProduct] = useState<ProductDTO>({} as ProductDTO);
-  const [barcodeErrorMessage, setBarcodeErrorMessage] = React.useState<string>("");
+  const [barcodeErrorMessage, setBarcodeErrorMessage] = useState<string>("");
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+  const toggleModal = useCallback(() => {
+    setModalVisible((prev) => !prev);
+  }, []);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -38,32 +38,59 @@ export default function ScannerScreen() {
 
   useEffect(() => {
     if (barcodeErrorMessage) {
-      ProductErrorAlert({ barcodeErrorMessage, setScanned });
+      ProductErrorAlert({
+        barcodeErrorMessage,
+        setScanned: () => {
+          setScanned(false);
+          setBarcodeErrorMessage("");
+        },
+      });
     }
   }, [barcodeErrorMessage]);
 
-  const handleBarCodeScanned = async (scanningRes: ScanningResult) => {
-    setScanned(true);
-    setIsLoading(true);
-
-    try {
-      await handleSearchByBarcode(scanningRes.data).then((data) => {
-        setProduct(data), toggleModal();
-      });
-    } catch (err: any) {
-      if (err?.statusCode === 404 && err?.error === "Not Found" && err?.message === "Nothing found") {
-        setBarcodeErrorMessage("😞Продукту не знайдено😞");
-      } else if (err?.statusCode === 404 && err?.error === "Not Found" && err?.message === "No barcode was provided") {
-        return;
-      }
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    if (!isModalVisible) {
+      setTimeout(() => {
+        setScanned(false);
+      }, 500);
     }
-  };
+  }, [isModalVisible]);
 
-  const handleCameraReady = () => {
+  useEffect(() => {
+    if (tabIsFocused) {
+      setScanned(false);
+      setBarcodeErrorMessage("");
+    }
+  }, [tabIsFocused]);
+
+  const handleBarCodeScanned = useCallback(
+    async (scanningRes: ScanningResult) => {
+      setScanned(true);
+      setIsLoading(true);
+
+      try {
+        const data = await handleSearchByBarcode(scanningRes.data);
+        setProduct(data);
+        toggleModal();
+      } catch (err: any) {
+        if (err?.statusCode === 404 && err?.message === "Nothing found") {
+          setBarcodeErrorMessage("😞Продукту не знайдено😞");
+        } else if (err?.statusCode === 404 && err?.message === "No barcode was provided") {
+          setScanned(false);
+          return;
+        } else {
+          setBarcodeErrorMessage("Сталася помилка. Спробуйте ще раз");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [toggleModal],
+  );
+
+  const handleCameraReady = useCallback(() => {
     setIsCameraReady(true);
-  };
+  }, []);
 
   if (hasPermission === null) {
     return <Text style={tw`mt-10 text-center`}>Requesting for camera permission</Text>;
@@ -99,7 +126,7 @@ export default function ScannerScreen() {
 async function handleSearchByBarcode(barcode: string): Promise<ProductDTO> {
   try {
     const response = await axios.get(`${process.env.EXPO_PUBLIC_API}/products/search-barcode`, {
-      params: barcode,
+      params: { barcode },
       timeout: 5000,
     });
     return response.data as ProductDTO;

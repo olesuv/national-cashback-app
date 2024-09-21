@@ -9,7 +9,7 @@ const ErrorMessageMapper = new Map<string, string>([
   ["😞Продукту не знайдено😞", `Продукт не підпадає під програму "Національний Кешбек"`],
 ]);
 
-export default async function ProductErrorAlert({ barcodeErrorMessage, setScanned }: IScanProductErrorProps) {
+export default function ProductErrorAlert({ barcodeErrorMessage, setScanned }: IScanProductErrorProps) {
   return Alert.alert(barcodeErrorMessage, ErrorMessageMapper.get(barcodeErrorMessage), [
     {
       text: "OK",

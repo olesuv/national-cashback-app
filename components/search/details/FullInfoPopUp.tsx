@@ -3,7 +3,7 @@ import { Text, View, Pressable } from "react-native";
 
 import BottomHalf from "react-native-modal";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface FullInfoProps {
   infoData: ProductDTO;
@@ -19,13 +19,22 @@ interface ProductEctInfoDTO {
 export default function FullInfoPopUp({ infoData, isModalVisible, toggleModal }: FullInfoProps) {
   const [ectInfo, setEctInfo] = useState<ProductEctInfoDTO>({ edrpou: "", rnokpp: "" });
 
-  try {
-    fetchEctInfo(infoData.barcode).then((data) => {
-      setEctInfo(data);
-    });
-  } catch (err) {
-    console.error(`Server error fetching product ect info: ${err}`);
-  }
+  useEffect(() => {
+    if (!infoData.edrpou || !infoData.rnokpp) {
+      try {
+        fetchEctInfo(infoData.barcode).then((data) => {
+          setEctInfo(data);
+        });
+      } catch (err) {
+        console.error(`Server error fetching product ect info: ${err}`);
+      }
+    } else {
+      setEctInfo({
+        edrpou: infoData.edrpou,
+        rnokpp: infoData.rnokpp,
+      });
+    }
+  }, [infoData]);
 
   return (
     <View style={tw`flex-1 bg-white`}>
