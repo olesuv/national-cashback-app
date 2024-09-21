@@ -3,7 +3,7 @@ import { Text, View, ActivityIndicator } from "react-native";
 import { Camera, CameraView, ScanningResult } from "expo-camera";
 import { useIsFocused } from "@react-navigation/native";
 import { ProductDTO, ProductErrorDTO } from "./search";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import FullInfoPopUp from "@/components/search/details/FullInfoPopUp";
 import ProductErrorAlert from "@/components/scanner/ScanProductError";
@@ -17,6 +17,8 @@ export default function ScannerScreen() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [product, setProduct] = useState<ProductDTO>({} as ProductDTO);
   const [barcodeErrorMessage, setBarcodeErrorMessage] = React.useState<string>("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -39,6 +41,7 @@ export default function ScannerScreen() {
 
   const handleBarCodeScanned = async (scanningRes: ScanningResult) => {
     setScanned(true);
+    setIsLoading(true);
 
     try {
       await handleSearchByBarcode(scanningRes.data).then((data) => {
@@ -50,6 +53,8 @@ export default function ScannerScreen() {
       } else if (err?.statusCode === 404 && err?.error === "Not Found" && err?.message === "No barcode was provided") {
         return;
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -90,6 +95,13 @@ export default function ScannerScreen() {
           <View style={tw`h-1/4 w-4/5 rounded-lg border-2 border-white opacity-50`} />
         </View>
 
+        {isLoading && (
+          <View style={tw`absolute inset-0 flex items-center justify-center bg-black bg-opacity-50`}>
+            <ActivityIndicator size="large" color="#FFFFFF" />
+            <Text style={tw`mt-2 text-white`}>Завантаження...</Text>
+          </View>
+        )}
+
         <FullInfoPopUp infoData={product} isModalVisible={isModalVisible} toggleModal={toggleModal} />
       </View>
     </View>
@@ -97,12 +109,22 @@ export default function ScannerScreen() {
 }
 
 async function handleSearchByBarcode(barcode: string): Promise<ProductDTO> {
-  return await axios
-    .get(`${process.env.EXPO_PUBLIC_API}/products/search-barcode`, { params: { barcode: barcode } })
-    .then((response) => {
-      return response.data as ProductDTO;
-    })
-    .catch((error) => {
-      throw error.response.data as ProductErrorDTO;
+  try {
+    const response = await axios.get(`${process.env.EXPO_PUBLIC_API}/products/search-barcode`, {
+      params: { barcode: barcode },
+      timeout: 5000,
     });
+    return response.data as ProductDTO;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError<ProductErrorDTO>;
+      if (axiosError.code === "ECONNABORTED") {
+        throw new Error("Request timed out");
+      }
+      if (axiosError.response) {
+        throw axiosError.response.data;
+      }
+    }
+    throw new Error("An unexpected error occurred");
+  }
 }

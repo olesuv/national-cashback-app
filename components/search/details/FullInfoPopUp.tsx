@@ -23,8 +23,8 @@ export default function FullInfoPopUp({ infoData, isModalVisible, toggleModal }:
     fetchEctInfo(infoData.barcode).then((data) => {
       setEctInfo(data);
     });
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.error(`Server error fetching product ect info: ${err}`);
   }
 
   return (
