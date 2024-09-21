@@ -37,7 +37,7 @@ export default function FullInfoPopUp({ infoData, isModalVisible, toggleModal }:
   }, [infoData]);
 
   return (
-    <View style={tw`flex-1 bg-white`}>
+    <View style={tw`absolute flex-1 bg-white`}>
       <BottomHalf isVisible={isModalVisible}>
         <View style={tw`absolute inset-x-0 bottom-0 rounded-t-xl bg-white p-4`}>
           <View style={tw`mb-4`}>
