@@ -1,20 +1,9 @@
-import { ProductDTO, ProductErrorDTO } from "@/types/productDTOs";
+import { FullInfoProps, ProductEctInfoDTO, ProductErrorDTO } from "@/types/productDTOs";
 import { Text, View, Pressable } from "react-native";
 
 import BottomHalf from "react-native-modal";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-interface FullInfoProps {
-  infoData: ProductDTO;
-  isModalVisible: boolean;
-  toggleModal: () => void;
-}
-
-interface ProductEctInfoDTO {
-  edrpou: string;
-  rnokpp: string;
-}
 
 export default function FullInfoPopUp({ infoData, isModalVisible, toggleModal }: FullInfoProps) {
   const [ectInfo, setEctInfo] = useState<ProductEctInfoDTO>({ edrpou: "", rnokpp: "" });

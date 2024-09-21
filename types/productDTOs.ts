@@ -12,3 +12,13 @@ export interface ProductErrorDTO {
   error: string;
   statusCode: number;
 }
+export interface FullInfoProps {
+  infoData: ProductDTO;
+  isModalVisible: boolean;
+  toggleModal: () => void;
+}
+
+export interface ProductEctInfoDTO {
+  edrpou: string;
+  rnokpp: string;
+}
