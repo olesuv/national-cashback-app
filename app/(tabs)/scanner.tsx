@@ -1,100 +1,77 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Text, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
-import { Camera, CameraView, ScanningResult } from "expo-camera";
-import axios, { AxiosError } from "axios";
+import { CameraView, ScanningResult } from "expo-camera";
 
-import { ProductDTO, ProductErrorDTO } from "./search";
+// import { ProductDTO } from "./types";
+import { BARCODE_TYPES } from "@/constants/barcodes";
+import { useProductSearch } from "@/hooks/barcodeSearch";
+import { useCameraPermission } from "@/hooks/cameraPermission";
 
 import FullInfoPopUp from "@/components/search/details/FullInfoPopUp";
 import ProductErrorAlert from "@/components/scanner/ScanProductError";
 import InitCamera from "@/components/scanner/InitCamera";
 import ScannerLoading from "@/components/scanner/ScannerLoading";
+import { ProductDTO } from "./search";
 
 export default function ScannerScreen() {
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
-  const tabIsFocused = useIsFocused();
-
   const [isModalVisible, setModalVisible] = useState(false);
-  const [product, setProduct] = useState<ProductDTO>({} as ProductDTO);
-  const [barcodeErrorMessage, setBarcodeErrorMessage] = useState<string>("");
+  const [product, setProduct] = useState<ProductDTO | null>(null);
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  const toggleModal = useCallback(() => {
-    setModalVisible((prev) => !prev);
-  }, []);
+  const tabIsFocused = useIsFocused();
+  const { hasPermission, requestPermission } = useCameraPermission();
+  const { searchProduct, isLoading, error } = useProductSearch();
 
   useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
-    };
-
-    getBarCodeScannerPermissions();
-  }, []);
+    requestPermission();
+  }, [requestPermission]);
 
   useEffect(() => {
-    if (barcodeErrorMessage) {
+    if (error) {
       ProductErrorAlert({
-        barcodeErrorMessage,
-        setScanned: () => {
-          setScanned(false);
-          setBarcodeErrorMessage("");
-        },
+        barcodeErrorMessage: error,
+        setScanned: () => setScanned(false),
       });
     }
-  }, [barcodeErrorMessage]);
+  }, [error]);
 
   useEffect(() => {
     if (!isModalVisible) {
-      setTimeout(() => {
-        setScanned(false);
-      }, 500);
+      const timer = setTimeout(() => setScanned(false), 500);
+      return () => clearTimeout(timer);
     }
   }, [isModalVisible]);
 
   useEffect(() => {
     if (tabIsFocused) {
       setScanned(false);
-      setBarcodeErrorMessage("");
     }
   }, [tabIsFocused]);
 
   const handleBarCodeScanned = useCallback(
     async (scanningRes: ScanningResult) => {
       setScanned(true);
-      setIsLoading(true);
-
       try {
-        const data = await handleSearchByBarcode(scanningRes.data);
+        const data = await searchProduct(scanningRes.data);
         setProduct(data);
-        toggleModal();
-      } catch (err: any) {
-        if (err?.statusCode === 404 && err?.message === "Nothing found") {
-          setBarcodeErrorMessage("😞Продукту не знайдено😞");
-        } else if (err?.statusCode === 404 && err?.message === "No barcode was provided") {
-          setScanned(false);
-          return;
-        } else {
-          setBarcodeErrorMessage("Сталася помилка. Спробуйте ще раз");
-        }
-      } finally {
-        setIsLoading(false);
+        setModalVisible(true);
+      } catch (err) {
+        // Error handling is done in the useProductSearch hook
       }
     },
-    [toggleModal],
+    [searchProduct],
   );
 
-  const handleCameraReady = useCallback(() => {
-    setIsCameraReady(true);
-  }, []);
+  const handleCameraReady = useCallback(() => setIsCameraReady(true), []);
+
+  const toggleModal = useCallback(() => setModalVisible((prev) => !prev), []);
 
   if (hasPermission === null) {
-    return <Text style={tw`mt-10 text-center`}>Requesting for camera permission</Text>;
+    return <Text style={tw`mt-10 text-center`}>Requesting camera permission...</Text>;
   }
+
   if (hasPermission === false) {
     return <Text style={tw`mt-10 text-center`}>No access to camera</Text>;
   }
@@ -110,36 +87,14 @@ export default function ScannerScreen() {
               onCameraReady={handleCameraReady}
               onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
               barcodeScannerSettings={{
-                barcodeTypes: ["ean13", "ean8", "code128", "itf14"],
+                barcodeTypes: BARCODE_TYPES,
               }}
             />
           )}
         </View>
         {isLoading && <ScannerLoading />}
-
-        <FullInfoPopUp infoData={product} isModalVisible={isModalVisible} toggleModal={toggleModal} />
+        {product && <FullInfoPopUp infoData={product} isModalVisible={isModalVisible} toggleModal={toggleModal} />}
       </View>
     </View>
   );
-}
-
-async function handleSearchByBarcode(barcode: string): Promise<ProductDTO> {
-  try {
-    const response = await axios.get(`${process.env.EXPO_PUBLIC_API}/products/search-barcode`, {
-      params: { barcode },
-      timeout: 5000,
-    });
-    return response.data as ProductDTO;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ProductErrorDTO>;
-      if (axiosError.code === "ECONNABORTED") {
-        throw new Error("Request timed out");
-      }
-      if (axiosError.response) {
-        throw axiosError.response.data;
-      }
-    }
-    throw new Error("An unexpected error occurred");
-  }
 }
