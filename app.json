@@ -1,12 +1,14 @@
 {
   "expo": {
-    "name": "client",
-    "slug": "client",
+    "name": "UA Cashback",
+    "description": "Unofficial Open-Source National Cashback scanner app with useful features",
+    "slug": "ua-cashback-app",
+    "owner": "olesuv",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
