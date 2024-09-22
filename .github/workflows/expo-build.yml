@@ -22,8 +22,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
       - name: Log in to EAS
-        run: eas login --token ${{ secrets.github-workflows }}
+        run: eas login --token ${{ secrets.EXPO_TOKEN }}
 
       - name: Build for dev
         if: github.ref == 'refs/heads/dev'
