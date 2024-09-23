@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import SearchScreen from "./search";
 import HomeScreen from "./index";
-import SettingsScreen from "./settings";
+import MapSreeen from "./map";
 import ScannerScreen from "./scanner";
 
 const Tab = createBottomTabNavigator();
@@ -17,7 +17,7 @@ export default function TabLayout() {
       <Tab.Screen name="index" component={HomeScreen} />
       <Tab.Screen name="search" component={SearchScreen} />
       <Tab.Screen name="scanner" component={ScannerScreen} />
-      <Tab.Screen name="settings" component={SettingsScreen} />
+      <Tab.Screen name="map" component={MapSreeen} />
     </Tab.Navigator>
   );
 }

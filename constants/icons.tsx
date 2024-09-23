@@ -11,10 +11,10 @@ export const TabBarIcons = {
   search: (props: Omit<React.ComponentProps<typeof Octicons>, "name">) => (
     <Octicons name="search" size={iconSize} {...props} />
   ),
-  settings: (props: Omit<React.ComponentProps<typeof Ionicons>, "name">) => (
-    <Ionicons name="settings" size={iconSize} {...props} />
-  ),
   scanner: (props: Omit<React.ComponentProps<typeof Ionicons>, "name">) => (
     <Ionicons name="barcode-outline" size={iconSize} {...props} />
+  ),
+  map: (props: Omit<React.ComponentProps<typeof Ionicons>, "name">) => (
+    <Feather name="map-pin" size={iconSize} {...props} />
   ),
 };
