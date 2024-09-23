@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { View, Keyboard } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 
 import SearchRules from "@/components/search/SearchRules";
 import SearchError from "@/components/search/SearchError";
@@ -20,6 +21,12 @@ export default function SearchScreen() {
   };
 
   const fetchResults = async (newOffset: number) => {
+    const state = await NetInfo.fetch();
+    if (!state.isConnected) {
+      setSearchError("⚠️ Немає підключення до Інтернету");
+      return;
+    }
+
     try {
       const res = await handleSearchQuery(searchQuery, SEARCH_LIMIT, newOffset);
       setSearchResults(res);
