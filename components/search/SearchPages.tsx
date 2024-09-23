@@ -1,4 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
+import { PagesIcons } from "@/constants/icons";
 
 interface SearchPagesProps {
   offset: number;
@@ -20,17 +21,17 @@ export default function SearchPages({
       <TouchableOpacity
         onPress={handlePrevPage}
         disabled={offset === 0}
-        style={tw`rounded-lg bg-blue-500 px-4 py-2 ${offset === 0 ? "opacity-50" : ""}`}
+        style={tw`rounded-lg bg-black px-4 py-2 ${offset === 0 ? "opacity-50" : ""}`}
       >
-        <Text style={tw`font-semibold text-white`}>Попередня</Text>
+        <Text style={tw`font-semibold text-white`}>{PagesIcons.back}</Text>
       </TouchableOpacity>
       <Text style={tw`text-zinc-600`}>{`Сторінка ${Math.floor(offset / limit) + 1}`}</Text>
       <TouchableOpacity
         onPress={handleNextPage}
         disabled={searchResults.length < limit}
-        style={tw`rounded-lg bg-blue-500 px-4 py-2 ${searchResults.length < limit ? "opacity-50" : ""}`}
+        style={tw`rounded-lg bg-black px-4 py-2 ${searchResults.length < limit ? "opacity-50" : ""}`}
       >
-        <Text style={tw`font-semibold text-white`}>Наступна</Text>
+        <Text style={tw`font-semibold text-white`}>{PagesIcons.next}</Text>
       </TouchableOpacity>
     </View>
   );
