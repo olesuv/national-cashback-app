@@ -7,6 +7,7 @@ import SearchRules from "@/components/search/SearchRules";
 import SearchError from "@/components/search/SearchError";
 import SearchResults from "@/components/search/SearchReuslts";
 import SearchBar from "@/components/search/SearchBar";
+import SearchLoading from "@/components/search/SearchLoadingBanner";
 import { ProductDTO, ProductErrorDTO } from "@/types/productDTOs";
 
 export default function SearchScreen() {
@@ -14,6 +15,7 @@ export default function SearchScreen() {
   const [searchError, setSearchError] = React.useState("");
   const [searchResults, setSearchResults] = React.useState<ProductDTO[]>([]);
   const [offset, setOffset] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
   const SEARCH_LIMIT = 10;
 
   const handleScroll = () => {
@@ -28,7 +30,10 @@ export default function SearchScreen() {
     }
 
     try {
+      setLoading(true);
+
       const res = await handleSearchQuery(searchQuery, SEARCH_LIMIT, newOffset);
+
       setSearchResults(res);
       setOffset(newOffset);
       setSearchError("");
@@ -39,6 +44,8 @@ export default function SearchScreen() {
         setSearchError("⚙️ Невідома помилка. Її хтось вже виправляє...");
         console.error(err);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -54,11 +61,11 @@ export default function SearchScreen() {
       />
 
       <View style={tw`mb-20 flex-1`}>
-        {searchError !== "" ? (
+        {!loading && searchError !== "" ? (
           <SearchError searchError={searchError} />
-        ) : searchResults.length === 0 ? (
+        ) : !loading && searchResults.length === 0 ? (
           <SearchRules />
-        ) : (
+        ) : !loading && searchResults.length >= 1 ? (
           <SearchResults
             searchResults={searchResults}
             handleScroll={handleScroll}
@@ -66,6 +73,8 @@ export default function SearchScreen() {
             limit={SEARCH_LIMIT}
             fetchResults={fetchResults}
           />
+        ) : (
+          <SearchLoading />
         )}
       </View>
     </View>
