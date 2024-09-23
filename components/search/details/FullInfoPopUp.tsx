@@ -30,7 +30,9 @@ export default function FullInfoPopUp({ infoData, isModalVisible, toggleModal }:
       <BottomHalf isVisible={isModalVisible}>
         <View style={tw`absolute inset-x-0 bottom-0 rounded-t-xl bg-white p-4`}>
           <View style={tw`mb-4`}>
-            <Text style={tw`text-2xl font-bold text-black`}>{infoData.product_name}</Text>
+            <Text style={tw`mb-4 text-2xl font-extrabold text-black`}>✅ {infoData.product_name}</Text>
+
+            <Text style={tw`text-xl font-bold`}>Інформація про товар:</Text>
             <Text style={tw`text-lg`}>
               <Text style={tw`font-semibold`}>Код товару: </Text>
               {infoData.barcode}
