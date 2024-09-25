@@ -13,6 +13,7 @@ import { ProductDTO } from "@/types/productDTOs";
 
 import { Octicons } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import SearchCheckBoxes from "./SearchCheckBoxes";
 
 interface SearchBarProps {
   searchQuery: string;
@@ -67,6 +68,8 @@ export default function SearchBar({
             <Octicons name="search" size={20} onPress={handleDonePress} style={tw`text-zinc-400`} />
           </TouchableOpacity>
         </View>
+
+        <SearchCheckBoxes />
       </View>
     </SafeAreaView>
   );
