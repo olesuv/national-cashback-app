@@ -8,6 +8,7 @@ interface IScanProductErrorProps {
 const ErrorMessageMapper = new Map<string, string>([
   ["😞Продукту не знайдено😞", `Продукт не підпадає під програму "Національний Кешбек"`],
   ["⚠️ Немає підключення до Інтернету", ""],
+  ["🫨Забагато запитів🫨", "Зачекай трохи і спробуй ще раз"],
 ]);
 
 export default function ProductErrorAlert({ barcodeErrorMessage, setScanned }: IScanProductErrorProps) {

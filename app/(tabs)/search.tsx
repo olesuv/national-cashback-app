@@ -40,6 +40,8 @@ export default function SearchScreen() {
     } catch (err: any) {
       if (err?.statusCode === 404 && err?.error === "Not Found") {
         setSearchError("😞 Нічого не було знайдено по твому запиту");
+      } else if (err?.statusCode === 429) {
+        setSearchError("🫨 Забагато запитів, зачекай трохи");
       } else {
         setSearchError("⚙️ Невідома помилка. Її хтось вже виправляє...");
         console.error(err);

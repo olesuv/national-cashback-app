@@ -35,6 +35,8 @@ export const useProductSearch = () => {
             } else if (axiosError.response.data.message === "No barcode was provided") {
               setError("No barcode provided");
             }
+          } else if (axiosError.response.status === 429) {
+            setError("🫨Забагато запитів🫨");
           } else {
             setError("An error occurred. Please try again.");
           }
