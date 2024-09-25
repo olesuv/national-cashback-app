@@ -49,9 +49,9 @@ export default function SearchBar({
   };
 
   return (
-    <SafeAreaView style={tw`bg-zinc-50 shadow-md`}>
+    <SafeAreaView style={tw`rounded-b-3xl bg-zinc-50 shadow-md`}>
       <View style={tw`px-4 py-2`}>
-        <View style={tw`flex-row items-center rounded-xl border border-zinc-300 bg-white p-1`}>
+        <View style={tw`flex-row items-center rounded-full border border-zinc-300 bg-white p-1`}>
           <TextInput
             returnKeyType="done"
             placeholder="Знайти товар..."
