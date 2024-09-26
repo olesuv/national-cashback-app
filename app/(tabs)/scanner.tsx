@@ -38,7 +38,7 @@ export default function ScannerScreen() {
 
   useEffect(() => {
     if (!isModalVisible) {
-      const timer = setTimeout(() => setScanned(false), 500);
+      const timer = setTimeout(() => setScanned(false), 1000);
       return () => clearTimeout(timer);
     }
   }, [isModalVisible]);

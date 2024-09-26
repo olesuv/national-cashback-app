@@ -34,6 +34,8 @@ export const useProductSearch = () => {
               setError("😞Продукту не знайдено😞");
             } else if (axiosError.response.data.message === "No barcode was provided") {
               setError("No barcode provided");
+            } else if (axiosError.response.data.message === "Rus product") {
+              setError("🔪🐷🐶🇷🇺");
             }
           } else if (axiosError.response.status === 429) {
             setError("🫨Забагато запитів🫨");
