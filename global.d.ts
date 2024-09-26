@@ -1,7 +1,7 @@
-import tw from "twrnc";
+import { create } from "twrnc";
 
 declare global {
-  var tw: ReturnType<typeof tw>;
+  var tw: ReturnType<typeof create>;
 }
 
 export {};

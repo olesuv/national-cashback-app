@@ -2,12 +2,14 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import tw from "twrnc";
+
+import { create } from "twrnc";
+import tailwindConfig from "@/tailwind.config.js";
 
 SplashScreen.preventAutoHideAsync();
 
-// loads global for styling
-global.tw = tw;
+// @ts-ignore
+global.tw = create(tailwindConfig);
 
 export default function RootLayout() {
   const [loaded] = useFonts({

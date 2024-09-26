@@ -14,6 +14,7 @@ import { ProductDTO } from "@/types/productDTOs";
 import { Octicons } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import SearchCheckBoxes from "./SearchCheckBoxes";
+import SearchBanner from "./SearchBanner";
 
 interface SearchBarProps {
   searchQuery: string;
@@ -51,11 +52,11 @@ export default function SearchBar({
 
   return (
     <SafeAreaView style={tw`rounded-b-3xl bg-zinc-50 shadow-md`}>
-      <View style={tw`px-4 py-2`}>
+      <View style={tw`mb-3 px-4 py-2`}>
         <View style={tw`flex-row items-center rounded-full border border-zinc-300 bg-white p-1`}>
           <TextInput
             returnKeyType="done"
-            placeholder="Знайти товар..."
+            placeholder={`Шукай товари з кешбеком`}
             value={searchQuery}
             onChange={handleSearchChange}
             onSubmitEditing={handleDonePress}
@@ -69,7 +70,8 @@ export default function SearchBar({
           </TouchableOpacity>
         </View>
 
-        <SearchCheckBoxes />
+        {/* <SearchCheckBoxes /> */}
+        <SearchBanner />
       </View>
     </SafeAreaView>
   );

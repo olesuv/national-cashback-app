@@ -1,11 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
-  content: [
-    "./app/**/*.{js,jsx,ts,tsx}",
-    "./components/**/*.{js,jsx,ts,tsx}",
-    "./constants/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}", "./constants/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       // color theme: https://designs.ai/colors/palette/19
@@ -21,6 +17,8 @@ module.exports = {
         base1: "#93a1a1",
         base00: "#657b83",
         base01: "#586e75",
+        // banner color
+        officialBg: "#123ecc",
       },
     },
   },
