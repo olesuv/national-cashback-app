@@ -1,5 +1,6 @@
-import Intro from "@/components/home/intro";
 import { View } from "react-native";
+
+import Intro from "@/components/home/intro";
 
 export default function HomeScreen() {
   return (

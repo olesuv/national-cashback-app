@@ -1,5 +1,5 @@
-import { Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { Text, View } from "react-native";
 
 export default function SearchBanner() {
   return (

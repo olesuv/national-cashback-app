@@ -1,4 +1,4 @@
-import { Text, ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 
 export default function InitCamera() {
   return (

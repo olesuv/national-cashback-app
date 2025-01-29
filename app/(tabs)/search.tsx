@@ -1,13 +1,13 @@
-import React from "react";
-import axios from "axios";
-import { View, Keyboard } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
+import axios from "axios";
+import React from "react";
+import { Keyboard, View } from "react-native";
 
-import SearchRules from "@/components/search/SearchRules";
-import SearchError from "@/components/search/SearchError";
-import SearchResults from "@/components/search/SearchReuslts";
 import SearchBar from "@/components/search/SearchBar";
+import SearchError from "@/components/search/SearchError";
 import SearchLoading from "@/components/search/SearchLoadingBanner";
+import SearchResults from "@/components/search/SearchReuslts";
+import SearchRules from "@/components/search/SearchRules";
 import { ProductDTO, ProductErrorDTO } from "@/types/productDTOs";
 
 export default function SearchScreen() {

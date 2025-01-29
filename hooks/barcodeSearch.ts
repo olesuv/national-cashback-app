@@ -1,8 +1,9 @@
-import { useState, useCallback } from "react";
 import NetInfo from "@react-native-community/netinfo";
 import axios, { AxiosError } from "axios";
-import { ProductDTO } from "@/types/productDTOs";
+import { useCallback,useState } from "react";
+
 import { API_ENDPOINT } from "@/constants/configs";
+import { ProductDTO } from "@/types/productDTOs";
 
 export const useProductSearch = () => {
   const [isLoading, setIsLoading] = useState(false);

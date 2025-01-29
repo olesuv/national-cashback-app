@@ -1,4 +1,5 @@
-import { View, Text } from "react-native";
+import { Text,View } from "react-native";
+
 import Slogan from "./slogan";
 
 export default function Intro() {

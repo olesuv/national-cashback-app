@@ -1,10 +1,11 @@
-import TabBar from "@/components/TabBar";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import SearchScreen from "./search";
+import TabBar from "@/components/TabBar";
+
 import HomeScreen from "./index";
 import MapSreeen from "./map";
 import ScannerScreen from "./scanner";
+import SearchScreen from "./search";
 
 const Tab = createBottomTabNavigator();
 

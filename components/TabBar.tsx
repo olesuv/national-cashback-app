@@ -1,7 +1,8 @@
-import { View, TouchableOpacity } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { TabBarIcons } from "@/constants/icons";
+import { TouchableOpacity,View } from "react-native";
 import { useColorScheme } from "react-native";
+
+import { TabBarIcons } from "@/constants/icons";
 
 export default function TabBar({
   state,

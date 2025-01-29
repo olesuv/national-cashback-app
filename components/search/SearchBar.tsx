@@ -1,20 +1,20 @@
+import { Octicons } from "@expo/vector-icons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import React from "react";
 import {
+  Keyboard,
+  NativeSyntheticEvent,
   SafeAreaView,
   TextInput,
+  TextInputChangeEventData,
   TouchableOpacity,
   View,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
-  Keyboard,
 } from "react-native";
-import React from "react";
 
 import { ProductDTO } from "@/types/productDTOs";
 
-import { Octicons } from "@expo/vector-icons";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import SearchCheckBoxes from "./SearchCheckBoxes";
 import SearchBanner from "./SearchBanner";
+import SearchCheckBoxes from "./SearchCheckBoxes";
 
 interface SearchBarProps {
   searchQuery: string;

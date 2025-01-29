@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from "react";
 import { Camera } from "expo-camera";
+import { useCallback, useEffect,useState } from "react";
 
 export const useCameraPermission = () => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);

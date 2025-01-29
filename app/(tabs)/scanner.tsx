@@ -1,17 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Text, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { CameraView, ScanningResult } from "expo-camera";
+import React, { useCallback,useEffect, useState } from "react";
+import { Text, View } from "react-native";
 
-import { ProductDTO } from "@/types/productDTOs";
+import InitCamera from "@/components/scanner/InitCamera";
+import ScannerLoading from "@/components/scanner/ScannerLoading";
+import ProductErrorAlert from "@/components/scanner/ScanProductError";
+import FullInfoPopUp from "@/components/search/details/FullInfoPopUp";
 import { BARCODE_TYPES } from "@/constants/barcodes";
 import { useProductSearch } from "@/hooks/barcodeSearch";
 import { useCameraPermission } from "@/hooks/cameraPermission";
-
-import FullInfoPopUp from "@/components/search/details/FullInfoPopUp";
-import ProductErrorAlert from "@/components/scanner/ScanProductError";
-import InitCamera from "@/components/scanner/InitCamera";
-import ScannerLoading from "@/components/scanner/ScannerLoading";
+import { ProductDTO } from "@/types/productDTOs";
 
 export default function ScannerScreen() {
   const [scanned, setScanned] = useState(false);

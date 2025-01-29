@@ -1,4 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
+
 import { PagesIcons } from "@/constants/icons";
 
 interface SearchPagesProps {

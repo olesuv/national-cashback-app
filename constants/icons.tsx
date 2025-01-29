@@ -1,6 +1,6 @@
-import Octicons from "@expo/vector-icons/Octicons";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import Octicons from "@expo/vector-icons/Octicons";
 
 const tabBariconSize = 25;
 

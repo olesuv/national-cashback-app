@@ -1,5 +1,7 @@
-import { ProductDTO } from "@/types/productDTOs";
 import { ScrollView, View } from "react-native";
+
+import { ProductDTO } from "@/types/productDTOs";
+
 import SearchPages from "./SearchPages";
 import SearchResultsMapping from "./SearchResultsMapping";
 
