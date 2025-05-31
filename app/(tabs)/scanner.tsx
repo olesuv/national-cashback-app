@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native"; // Import StyleSheet
 import { useIsFocused } from "@react-navigation/native";
 import { CameraView, ScanningResult } from "expo-camera";
 
@@ -13,6 +13,35 @@ import ProductErrorAlert from "@/components/scanner/ScanProductError";
 import InitCamera from "@/components/scanner/InitCamera";
 import ScannerLoading from "@/components/scanner/ScannerLoading";
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f3f4f6", // bg-gray-100
+  },
+  cameraContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  cameraWrapper: {
+    height: "25%", // h-1/4
+    width: "80%", // w-4/5
+    overflow: "hidden",
+    borderRadius: 8, // rounded-lg
+    backgroundColor: "#e5e7eb", // bg-gray-200
+    position: "relative",
+  },
+  cameraView: {
+    flex: 1,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject, // Position over the camera
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#e5e7eb", // bg-gray-200, matches wrapper background
+  },
+});
+
 export default function ScannerScreen() {
   const [scanned, setScanned] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
@@ -20,7 +49,7 @@ export default function ScannerScreen() {
   const [product, setProduct] = useState<ProductDTO | null>(null);
 
   const tabIsFocused = useIsFocused();
-  const { hasPermission, requestPermission } = useCameraPermission();
+  const { hasPermission, requestPermission } = useCameraPermission(); // Make sure this hook requests camera permissions properly
   const { searchProduct, isLoading, error } = useProductSearch();
 
   useEffect(() => {
@@ -46,18 +75,26 @@ export default function ScannerScreen() {
   useEffect(() => {
     if (tabIsFocused) {
       setScanned(false);
+    } else {
+      setIsCameraReady(false);
+      setProduct(null);
+      setModalVisible(false);
     }
   }, [tabIsFocused]);
 
   const handleBarCodeScanned = useCallback(
     async (scanningRes: ScanningResult) => {
-      setScanned(true);
+      if (!scanned) {
+        setScanned(true);
 
-      const data = await searchProduct(scanningRes.data);
-      setProduct(data);
-      setModalVisible(true);
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        const data = await searchProduct(scanningRes.data);
+        setProduct(data);
+        setModalVisible(true);
+      }
     },
-    [searchProduct],
+    [searchProduct, scanned],
   );
 
   const handleCameraReady = useCallback(() => setIsCameraReady(true), []);
@@ -73,19 +110,26 @@ export default function ScannerScreen() {
   }
 
   return (
-    <View style={tw`flex-1 bg-gray-100`}>
-      <View style={tw`flex-1 items-center justify-center`}>
-        <View style={tw`h-1/4 w-4/5 overflow-hidden rounded-lg bg-gray-200`}>
-          {!isCameraReady && <InitCamera />}
-          {tabIsFocused && (
+    <View style={styles.container}>
+      {" "}
+      <View style={styles.cameraContainer}>
+        {" "}
+        <View style={styles.cameraWrapper}>
+          {" "}
+          {tabIsFocused && hasPermission && (
             <CameraView
-              style={tw`flex-1 ${isCameraReady ? "" : "hidden"}`}
+              style={styles.cameraView}
               onCameraReady={handleCameraReady}
-              onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+              onBarcodeScanned={isCameraReady && !scanned ? handleBarCodeScanned : undefined}
               barcodeScannerSettings={{
                 barcodeTypes: BARCODE_TYPES,
               }}
             />
+          )}
+          {!isCameraReady && (
+            <View style={styles.overlay}>
+              <InitCamera />
+            </View>
           )}
         </View>
         {isLoading && <ScannerLoading />}
