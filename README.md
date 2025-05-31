@@ -9,6 +9,6 @@
 2. Start the app
 
    ```bash
-    npm run start
+   npm run start
    ```
 
